@@ -2,10 +2,10 @@
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ChangeEvent, useId, useState } from 'react';
+import { ChangeEvent, useId, useState, useEffect } from 'react';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/components/ui/pagination';
 import { ChevronFirst, ChevronLast, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type PaginationProps = {
     currentPage: number;
@@ -16,12 +16,25 @@ type PaginationProps = {
 export default function SearchPagination({ currentPage, totalPages, query }: PaginationProps) {
     const id = useId();
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const originalLanguages = searchParams.getAll('originalLanguage');
+
+    const originalLanguageQuery = `${originalLanguages?.includes('ja') ? '&originalLanguage=ja' : ''}${originalLanguages?.includes('ko') ? '&originalLanguage=ko' : ''}${
+        originalLanguages?.includes('zh') ? '&originalLanguage=zh' : ''
+    }`;
 
     const maxPages = totalPages > 999 ? 999 : totalPages;
+
     const [page, setPage] = useState<string>(currentPage.toString());
 
+    // 🔥 Sync the input value with the URL whenever 'currentPage' changes
+    useEffect(() => {
+        setPage(currentPage.toString());
+    }, [currentPage]);
+
     return (
-        <div className="flex flex-wrap items-center justify-between xs:justify-center xxs:justify-center gap-4 mt-4">
+        <div className="flex flex-wrap items-center justify-between xs:justify-center xxs:justify-center gap-4 mt-10">
             {/* Go to page input */}
             <div className="flex items-center gap-3">
                 <Label htmlFor={id} className="whitespace-nowrap">
@@ -49,7 +62,7 @@ export default function SearchPagination({ currentPage, totalPages, query }: Pag
                     }}
                     onBlur={() => {
                         if (!page) setPage('1');
-                        router.push(`/projects/mangadex${query ? `/search?q=${query}&` : '?'}page=${page ? page : '1'}`, { scroll: false });
+                        router.push(`/projects/mangadex${query ? `/search?q=${query}&` : '?'}page=${page ? page : '1'}${originalLanguageQuery}`, { scroll: false });
                         window.scrollTo(0, 0);
                     }}
                 />
@@ -63,7 +76,7 @@ export default function SearchPagination({ currentPage, totalPages, query }: Pag
                         <PaginationItem>
                             <PaginationLink
                                 className="aria-disabled:pointer-events-none aria-disabled:opacity-50 border"
-                                href={currentPage === 1 ? undefined : `/projects/mangadex${query ? `/search?q=${query}&` : '?'}page=1`}
+                                href={currentPage === 1 ? undefined : `/projects/mangadex${query ? `/search?q=${query}&` : '?'}page=1${originalLanguageQuery}`}
                                 aria-label="Go to first page"
                                 aria-disabled={currentPage === 1 ? true : undefined}
                                 role={currentPage === 1 ? 'link' : undefined}
@@ -76,7 +89,7 @@ export default function SearchPagination({ currentPage, totalPages, query }: Pag
                         <PaginationItem>
                             <PaginationLink
                                 className="aria-disabled:pointer-events-none aria-disabled:opacity-50 border"
-                                href={currentPage === 1 ? undefined : `/projects/mangadex${query ? `/search?q=${query}&` : '?'}page=${currentPage - 1}`}
+                                href={currentPage === 1 ? undefined : `/projects/mangadex${query ? `/search?q=${query}&` : '?'}page=${currentPage - 1}${originalLanguageQuery}`}
                                 aria-label="Go to previous page"
                                 aria-disabled={currentPage === 1 ? true : undefined}
                                 role={currentPage === 1 ? 'link' : undefined}
@@ -94,7 +107,11 @@ export default function SearchPagination({ currentPage, totalPages, query }: Pag
                         <PaginationItem>
                             <PaginationLink
                                 className="aria-disabled:pointer-events-none aria-disabled:opacity-50 border"
-                                href={currentPage === totalPages ? undefined : `/projects/mangadex${query ? `/search?q=${query}&` : '?'}page=${currentPage + 1}`}
+                                href={
+                                    currentPage === totalPages
+                                        ? undefined
+                                        : `/projects/mangadex${query ? `/search?q=${query}&` : '?'}page=${currentPage + 1}${originalLanguageQuery}`
+                                }
                                 aria-label="Go to next page"
                                 aria-disabled={currentPage === totalPages ? true : undefined}
                                 role={currentPage === totalPages ? 'link' : undefined}
@@ -107,7 +124,7 @@ export default function SearchPagination({ currentPage, totalPages, query }: Pag
                         <PaginationItem>
                             <PaginationLink
                                 className="aria-disabled:pointer-events-none aria-disabled:opacity-50 border"
-                                href={currentPage === totalPages ? undefined : `/projects/mangadex${query ? `/search?q=${query}&` : '?'}page=${totalPages}`}
+                                href={currentPage === totalPages ? undefined : `/projects/mangadex${query ? `/search?q=${query}&` : '?'}page=${totalPages}${originalLanguageQuery}`}
                                 aria-label="Go to last page"
                                 aria-disabled={currentPage === totalPages ? true : undefined}
                                 role={currentPage === totalPages ? 'link' : undefined}

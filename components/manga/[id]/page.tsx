@@ -240,19 +240,35 @@ export default async function Manga({ params }: MangaProps) {
                             <Accordion key={volumeKey} type="single" collapsible className="w-full space-y-2">
                                 <AccordionItem value={volumeKey} className="rounded-lg border bg-background px-4 py-1 mb-2">
                                     <AccordionTrigger className="justify-start gap-3 py-2 text-[15px] leading-6 hover:no-underline hover:text-orange-600 [&>svg]:-order-1 [&>svg]:hover:text-orange-600">
-                                        <div className="flex flex-wrap items-center w-full text-sm">
-                                            <h3 className="min-w-[5.5rem] xs:w-full">{volume.volume === 'none' ? 'No Volume' : `Volume ${volume.volume}`}</h3>
-                                            <p className="font-normal xs:w-full xxs:w-full">
-                                                {isComplete ? 'Complete' : `Incomplete (${chapterCount} / ${expectedChapterCount} chapters)`}
+                                        <div className="flex flex-wrap items-center justify-between w-full text-sm">
+                                            <p className="flex items-center mr-4">
+                                                {volume.volume === 'none' ? 'No Volume' : `Volume ${volume.volume}`}
+                                                {!isComplete && <span className="ml-1">{'- [Incomplete]'}</span>}
                                             </p>
-                                            <p className="grow xs:grow-0 xxs:grow-0 text-right xs:text-left xxs:text-left">
+                                            <p className="text-nowrap">
                                                 Chapter {volumeFirstChapter} - {volumeLastChapter}
                                             </p>
                                         </div>
                                     </AccordionTrigger>
                                     <AccordionContent className="pb-2 ps-7 text-muted-foreground">
                                         {missingChapters.length > 0 && (
-                                            <p className="text-orange-600 mb-1">Missing: {missingChapters.map((chapter) => `Chapter ${chapter}`).join(', ')}</p>
+                                            <div>
+                                                <div className="flex flex-col w-full gap-y-2 my-2 [&>p]:text-black bg-accent p-2.5 rounded-lg">
+                                                    <p>
+                                                        {chapterCount} out of {expectedChapterCount} chapters
+                                                    </p>
+                                                    <p>
+                                                        {missingChapters.length} missing chapter{missingChapters.length === 1 ? '' : 's'}:
+                                                    </p>
+                                                    <div className="flex items-center w-full gap-2 overflow-x-scroll no-scrollbar mb-0.5">
+                                                        {missingChapters.map((chapter, index) => (
+                                                            <Badge key={index} className="bg-black text-white text-nowrap hover:bg-black/80 select-none font-normal px-1.5">
+                                                                {chapter}
+                                                            </Badge>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         )}
 
                                         <ul className="flex flex-col w-full mb-2">

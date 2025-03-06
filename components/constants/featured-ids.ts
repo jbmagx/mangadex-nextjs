@@ -19,4 +19,6 @@ export const featuredIds = [
     'db692d58-4b13-4174-ae8c-30c515c0689c', // Hunter X Hunter
     '319df2e2-e6a6-4e3a-a31c-68539c140a84', // Slam Dunk!
     '77bee52c-d2d6-44ad-a33a-1734c1fe696a', // The Eminence in Shadow
+    '9a414441-bbad-43f1-a3a7-dc262ca790a3', // Omniscient Reader's Viewpoint
+    '4017de66-fe69-4e46-baa8-787c399de6d2', // Magic Level 99990000 All-Attribute Great Sage
 ];

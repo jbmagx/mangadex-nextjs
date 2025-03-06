@@ -120,7 +120,7 @@ export default async function Chapter({ params }: ChapterProps) {
                 images={chapterImagesData.chapter.data}
             />
 
-            <ChapterControls mangaTitle={mangaTitle as string} mangaId={id} currentChapter={chapterNumber} chapters={chapters} />
+            <ChapterControls mangaId={id} currentChapter={chapterNumber} chapters={chapters} />
 
             <ChapterScrollProgress />
         </div>

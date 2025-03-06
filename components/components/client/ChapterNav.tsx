@@ -51,7 +51,7 @@ export default function ChapterNav({ mangaId, currentChapter, chapters }: Chapte
                     onClick={() => {
                         setIsPreviousButtonClicked(true);
 
-                        if (!currentChapterNumber || !prevChapterNumber) return;
+                        if (!currentChapterNumber || (!prevChapterNumber && prevChapterNumber !== 0)) return;
 
                         if (currentChapterNumber - prevChapterNumber > 1.99) {
                             setOpenChapterGapDialog(!openChapterGapDialog);
@@ -60,7 +60,7 @@ export default function ChapterNav({ mangaId, currentChapter, chapters }: Chapte
                         }
                     }}
                     disabled={index === 0}
-                    className="flex items-center justify-center border h-9 w-9 rounded-md hover:bg-accent"
+                    className="flex items-center justify-center border h-9 w-9 rounded-md hover:bg-accent disabled:opacity-50 disabled:hover:bg-transparent disabled:text-muted-foreground"
                 >
                     {isPreviousButtonClicked ? <Loader2 size={16} className="animate-spin" /> : <ChevronLeft size={16} strokeWidth={2} aria-hidden="true" />}
                 </button>
@@ -74,7 +74,7 @@ export default function ChapterNav({ mangaId, currentChapter, chapters }: Chapte
                         router.push(`/projects/mangadex/manga/${mangaId}/chapter/${selectChapterId}`, { scroll: false });
                     }}
                 >
-                    <SelectTrigger autoFocus={true} id="select-page" className="focus:ring-0 gap-x-2 min-w-36 w-fit whitespace-nowrap grow">
+                    <SelectTrigger id="select-page" className="focus:ring-0 gap-x-2 min-w-36 w-fit whitespace-nowrap grow">
                         <SelectValue placeholder="Select page" />
                     </SelectTrigger>
                     <SelectContent>
@@ -90,7 +90,7 @@ export default function ChapterNav({ mangaId, currentChapter, chapters }: Chapte
                     onClick={() => {
                         setIsNextButtonClicked(true);
 
-                        if (!nextChapterNumber || !currentChapterNumber) return;
+                        if (!nextChapterNumber || (!currentChapterNumber && currentChapterNumber !== 0)) return;
 
                         if (nextChapterNumber - currentChapterNumber > 1.99) {
                             setOpenChapterGapDialog(!openChapterGapDialog);
@@ -99,7 +99,7 @@ export default function ChapterNav({ mangaId, currentChapter, chapters }: Chapte
                         }
                     }}
                     disabled={index === chapters.length - 1}
-                    className="flex items-center justify-center border h-9 w-9 rounded-md hover:bg-accent"
+                    className="flex items-center justify-center border h-9 w-9 rounded-md hover:bg-accent disabled:opacity-50 disabled:hover:bg-transparent disabled:text-muted-foreground"
                 >
                     {isNextButtonClicked ? <Loader2 size={16} className="animate-spin" /> : <ChevronRight size={16} strokeWidth={2} aria-hidden="true" />}
                 </button>

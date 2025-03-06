@@ -23,8 +23,8 @@ export default function MangaDexLayout({ children }: { children: React.ReactNode
             <Header />
 
             <div className="flex flex-col w-full min-h-[100dvh] xs:min-h-[100svh] xxs:min-h-[100svh] px-6">
-                <div className="flex flex-col w-full max-w-5xl mx-auto py-16">
-                    <div className="flex items-center justify-center mb-8">
+                <div className="flex flex-col w-full max-w-5xl mx-auto py-16 xs:py-14 xxs:py-12">
+                    <div className="flex items-center justify-center mb-8 xs:mb-5 xxs:mb-5">
                         <a href={'/projects/mangadex'} className="flex items-center justify-center gap-x-3">
                             <span className="relative w-8 h-8">
                                 <Image
@@ -42,7 +42,7 @@ export default function MangaDexLayout({ children }: { children: React.ReactNode
                         </a>
                     </div>
 
-                    <div className="mb-8">
+                    <div className="mb-8 xs:mb-6 xxs:mb-6">
                         <Search />
                     </div>
 
