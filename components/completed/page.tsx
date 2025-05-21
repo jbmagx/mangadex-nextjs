@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import MangaDexLayout from '../components/server/MangaDexLayout';
+import { baseURL } from '@/app/projects/mangadex/constants/base-url';
 import Loading from './loading';
-import OriginalLanguageFilter from '../components/client/OriginalLanguageFilter';
-import CompletedResults from '../components/server/CompletedResults';
-import CompletedPagination from '../components/client/CompletedPagination';
+import MangaDexLayout from '@/app/projects/mangadex/components/server/mangadex-layout/MangaDexLayout';
+import OriginalLanguageFilter from '@/app/projects/mangadex/components/client/OriginalLanguageFilter';
+import CompletedResults from '@/app/projects/mangadex/components/server/CompletedResults';
+import CompletedPagination from '@/app/projects/mangadex/components/client/CompletedPagination';
 
 export const metadata: Metadata = {
     title: 'jbmagx | MangaDex | Completed manga, manhwa, and manhua.',
@@ -23,8 +24,6 @@ export default async function Completed({ searchParams }: { searchParams: Promis
 
     const offset = (page ? parseInt(page) - 1 : 1 - 1) * limit;
 
-    const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://www.jbmagx.com';
-
     const completedResultsResponse = await fetch(
         `${baseURL}/api/projects/mangadex/completed?limit=${limit}&offset=${offset}${originalLanguage?.includes('ja') ? '&originalLanguage=ja' : ''}${
             originalLanguage?.includes('ko') ? '&originalLanguage=ko' : ''
@@ -35,27 +34,23 @@ export default async function Completed({ searchParams }: { searchParams: Promis
             },
         }
     );
-    if (!completedResultsResponse.ok) throw new Error('Oops! Something went wrong while fetching the results. Please try again.');
-    const completedResults = await completedResultsResponse.json();
 
-    const completedResultsStatistics = [];
-    for (let loop = 0; loop < completedResults.data.length; loop++) {
-        const completedResultStatisticsResponse = await fetch(`${baseURL}/api/projects/mangadex/manga/${completedResults.data[loop].id}/statistics`, {
-            next: {
-                revalidate: 3600, // 1 hour
-            },
-        });
-        if (!completedResultStatisticsResponse.ok) continue;
-        const completedResultStatistics = await completedResultStatisticsResponse.json();
-        completedResultsStatistics.push(completedResultStatistics.statistics);
-    }
+    if (!completedResultsResponse.ok) throw new Error('Oops! Something went wrong while fetching the results. Please try again.');
+
+    const completedResults: MangaDexGetMangaResponse = await completedResultsResponse.json();
 
     return (
         <MangaDexLayout>
             <Suspense fallback={<Loading />}>
                 <OriginalLanguageFilter />
 
-                <CompletedResults completedResults={completedResults} completedResultsStatistics={completedResultsStatistics} />
+                {/* Spacer */}
+                <div className="py-3" />
+
+                <CompletedResults completedResults={completedResults} />
+
+                {/* Spacer */}
+                <div className="py-5" />
 
                 <CompletedPagination
                     currentPage={page ? parseInt(page) : 1}

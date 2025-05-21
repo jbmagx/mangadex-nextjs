@@ -5,7 +5,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         const { chapterId } = await params;
         const { ua } = userAgent(request);
 
-        const response = await fetch(`https://api.mangadex.org/at-home/server/${chapterId}`, {
+        const response = await fetch(`https://api.mangadex.org/at-home/server/${chapterId}?forcePort443=false`, {
             method: 'GET',
             headers: {
                 'User-Agent': ua,

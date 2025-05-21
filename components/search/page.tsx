@@ -1,9 +1,10 @@
 import { Suspense } from 'react';
-import MangaDexLayout from '../components/server/MangaDexLayout';
+import { baseURL } from '@/app/projects/mangadex/constants/base-url';
 import Loading from './loading';
-import SearchResults from '../components/server/SearchResults';
+import MangaDexLayout from '@/app/projects/mangadex/components/server/mangadex-layout/MangaDexLayout';
+import SearchResults from '@/app/projects/mangadex/components/server/SearchResults';
 import SearchPagination from '@/app/projects/mangadex/components/client/SearchPagination';
-import OriginalLanguageFilter from '../components/client/OriginalLanguageFilter';
+import OriginalLanguageFilter from '@/app/projects/mangadex/components/client/OriginalLanguageFilter';
 
 export default async function MangaDexSearchPage({ searchParams }: { searchParams: Promise<{ q: string; page: string; originalLanguage: string }> }) {
     const { q, page, originalLanguage } = await searchParams;
@@ -13,8 +14,6 @@ export default async function MangaDexSearchPage({ searchParams }: { searchParam
     const limit = 10;
 
     const offset = (page ? parseInt(page) - 1 : 1 - 1) * limit;
-
-    const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://www.jbmagx.com';
 
     const searchResultsResponse = await fetch(
         `${baseURL}/api/projects/mangadex/search?query=${q}&limit=${limit}&offset=${offset}${originalLanguage?.includes('ja') ? '&originalLanguage=ja' : ''}${
@@ -26,27 +25,23 @@ export default async function MangaDexSearchPage({ searchParams }: { searchParam
             },
         }
     );
-    if (!searchResultsResponse.ok) throw new Error('Oops! Something went wrong while fetching the results. Please try again.');
-    const searchResults = await searchResultsResponse.json();
 
-    const searchResultsStatistics = [];
-    for (let loop = 0; loop < searchResults.data.length; loop++) {
-        const searchResultStatisticsResponse = await fetch(`${baseURL}/api/projects/mangadex/manga/${searchResults.data[loop].id}/statistics`, {
-            next: {
-                revalidate: 3600, // 1 hour
-            },
-        });
-        if (!searchResultStatisticsResponse.ok) continue;
-        const searchResultStatistics = await searchResultStatisticsResponse.json();
-        searchResultsStatistics.push(searchResultStatistics.statistics);
-    }
+    if (!searchResultsResponse.ok) throw new Error('Oops! Something went wrong while fetching the results. Please try again.');
+
+    const searchResults = await searchResultsResponse.json();
 
     return (
         <MangaDexLayout>
             <Suspense fallback={<Loading />}>
                 <OriginalLanguageFilter />
 
-                <SearchResults searchResults={searchResults} searchResultsStatistics={searchResultsStatistics} />
+                {/* Spacer */}
+                <div className="py-3" />
+
+                <SearchResults searchResults={searchResults} />
+
+                {/* Spacer */}
+                <div className="py-5" />
 
                 <SearchPagination
                     currentPage={page ? parseInt(page) : 1}

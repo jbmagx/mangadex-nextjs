@@ -89,7 +89,7 @@ export default function ChapterImage({ src, index, setNumberOfImagesLoaded }: Ch
                     alt={`Manga page ${index + 1}`}
                     width={dimensions.width}
                     height={dimensions.height}
-                    style={{ objectFit: 'contain' }}
+                    style={{ objectFit: 'contain', userSelect: 'none', WebkitUserSelect: 'none', WebkitTouchCallout: 'none' }}
                     quality={100}
                     placeholder="blur"
                     blurDataURL={rgbDataURL(46, 65, 74)}

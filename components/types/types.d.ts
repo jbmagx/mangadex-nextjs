@@ -1,13 +1,13 @@
-type MangaDexListData = {
+type MangaDexGetMangaResponse = {
     result: 'ok' | 'error';
     response: string;
-    data: MangaData[];
+    data: MangaDexGetMangaDataItem[];
     limit: number;
     offset: number;
     total: number;
 };
 
-type MangaData = {
+type MangaDexGetMangaDataItem = {
     id: string;
     type: 'manga';
     attributes: MangaAttributes;
@@ -58,7 +58,7 @@ type Relationship = {
     attributes: Record<string, unknown>;
 };
 
-type Manga = {
+type MangaDexGetMangaIdResponse = {
     result: string;
     response: string;
     data: {
@@ -80,22 +80,7 @@ type Manga = {
             chapterNumbersResetOnNewVolume: boolean;
             availableTranslatedLanguages: string[];
             latestUploadedChapter: string;
-            tags: Array<{
-                id: string;
-                type: string;
-                attributes: {
-                    name: Record<string, string>;
-                    description: Record<string, string>;
-                    group: string;
-                    version: number;
-                };
-                relationships: Array<{
-                    id: string;
-                    type: string;
-                    related: string;
-                    attributes: Record<string, unknown>;
-                }>;
-            }>;
+            tags: Tag[];
             state: 'draft' | 'published' | string;
             version: number;
             createdAt: string;
@@ -123,7 +108,7 @@ type Statistics = {
     follows: number;
 };
 
-type MangaDexStatisticsData = {
+type MangaDexGetStatisticsMangaUUIDResponse = {
     result: string;
     statistics: Record<string, Statistics>;
 };
@@ -141,12 +126,12 @@ type Volume = {
     chapters: Record<string, Chapter>;
 };
 
-type MangaAggregate = {
+type MangaDexGetMangaIdAggregateResponse = {
     result: string;
     volumes: Record<string, Volume>;
 };
 
-type ChapterImages = {
+type MangaDexGetAtHomeServerChapterIdResponse = {
     result: 'ok' | 'error';
     baseUrl: string;
     chapter: {
@@ -178,13 +163,13 @@ type ScanlationGroupAttributes = {
     version: number;
 };
 
-type ChapterInfoDataRelationship = {
+type MangaDexGetChapterIdDataRelationship = {
     id: string;
     type: 'scanlation_group' | 'manga' | 'user';
-    attributes?: ScanlationGroupAttributes;
+    attributes?: ScanlationGroupAttributes & MangaAttributes;
 };
 
-type ChapterInfoDataAttributes = {
+type MangaDexGetChapterIdDataAttributes = {
     volume: string | null;
     chapter: string;
     title: string;
@@ -198,17 +183,17 @@ type ChapterInfoDataAttributes = {
     version: number;
 };
 
-type ChapterInfoData = {
+type MangaDexGetChapterIdData = {
     id: string;
     type: 'chapter';
-    attributes: ChapterInfoDataAttributes;
-    relationships: ChapterInfoDataRelationship[];
+    attributes: MangaDexGetChapterIdDataAttributes;
+    relationships: MangaDexGetChapterIdDataRelationship[];
 };
 
-type ChapterInfo = {
-    result: string;
+type MangaDexGetChapterIdResponse = {
+    result: 'ok' | 'error';
     response: 'entity';
-    data: ChapterInfoData;
+    data: MangaDexGetChapterIdData;
 };
 
 type VolumeCheckResult = {

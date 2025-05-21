@@ -21,4 +21,6 @@ export const featuredIds = [
     '77bee52c-d2d6-44ad-a33a-1734c1fe696a', // The Eminence in Shadow
     '9a414441-bbad-43f1-a3a7-dc262ca790a3', // Omniscient Reader's Viewpoint
     '4017de66-fe69-4e46-baa8-787c399de6d2', // Magic Level 99990000 All-Attribute Great Sage
+    '24e7400d-dbad-4ff4-9ae0-9660102ce823', // Rise From the Rubble
+    'c268a95f-e3d6-4414-981b-6c83c6447f5a', // Get Schooled
 ];

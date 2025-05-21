@@ -1,4 +1,10 @@
-export const languages = [
+type Language = {
+    name: string;
+    code: string;
+    flag: string;
+};
+
+export const languages: Language[] = [
     { name: 'English', code: 'en', flag: '🇬🇧' },
     { name: 'Spanish', code: 'es', flag: '🇪🇸' },
     { name: 'Mandarin Chinese', code: 'zh', flag: '🇨🇳' },

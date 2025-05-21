@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
+import { baseURL } from './constants/base-url';
 
 export const metadata: Metadata = {
-    metadataBase: new URL(process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://www.jbmagx.com'),
+    metadataBase: new URL(baseURL),
     title: 'jbmagx | MangaDex',
     icons: {
         icon: '/images/svg/jbmagx-icon.svg',

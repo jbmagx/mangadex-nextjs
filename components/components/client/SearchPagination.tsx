@@ -34,7 +34,7 @@ export default function SearchPagination({ currentPage, totalPages, query }: Pag
     }, [currentPage]);
 
     return (
-        <div className="flex flex-wrap items-center justify-between xs:justify-center xxs:justify-center gap-4 mt-10">
+        <div className="flex flex-wrap w-full items-center justify-center md:justify-between gap-4">
             {/* Go to page input */}
             <div className="flex items-center gap-3">
                 <Label htmlFor={id} className="whitespace-nowrap">

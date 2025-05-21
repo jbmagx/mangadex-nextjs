@@ -5,7 +5,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         const { chapterId } = await params;
         const { ua } = userAgent(request);
 
-        const response = await fetch(`https://api.mangadex.org/chapter/${chapterId}?includes%5B%5D=scanlation_group`, {
+        const response = await fetch(`https://api.mangadex.org/chapter/${chapterId}?includes%5B%5D=manga&includes%5B%5D=scanlation_group&includes%5B%5D=user`, {
             method: 'GET',
             headers: {
                 'User-Agent': ua,

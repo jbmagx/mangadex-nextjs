@@ -11,8 +11,8 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
     }, [error]);
 
     return (
-        <div className="flex flex-col items-center justify-center w-full h-[100dvh] xs:h-[100svh] xxs:h-[100svh]">
-            <div className="w-full max-w-[320px] xxs:max-w-[280px]">
+        <div className="flex flex-col items-center justify-center w-full h-[100svh] sm:h-[100dvh]">
+            <div className="w-full max-w-70 xs:max-w-xs">
                 <div className="flex flex-col items-center gap-y-3">
                     <CircleAlert size={100} />
                     <h1 className="w-full text-center font-bold text-3xl">Oops!</h1>
